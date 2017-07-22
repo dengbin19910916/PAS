@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/kendoui/kendo.common-material.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/kendoui/kendo.material.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <title>Title</title>
+</head>
+<body>
+<form name="loginForm" th:action="@{/login}" method="post">
+    <label for="username" th:text="#{login.username}"></label>
+    <input id="username" name="username"/>
+    <br/>
+    <label for="password" th:text="#{login.password}"></label>
+    <input type="password" id="password" name="password">
+    <br><br>
+    <input class="k-button" type="submit" value="登录">
+</form>
+</body>
+</html>

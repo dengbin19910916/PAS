@@ -1,0 +1,83 @@
+#通用配置
+server:
+  port: 443
+#  servlet:
+#    path: /pas
+management:
+  context-path: /manage
+spring:
+  profiles:
+      active: development #开发模式
+  messages:
+    basename: i18n/messages
+  data:
+    rest:
+      base-path: /api
+info:
+  contact:
+    email: support@tiancom.com
+    phone: 020-22139710
+security:
+  require-ssl: true
+---
+#开发环境
+spring:
+  profiles: development
+  thymeleaf:
+    cache: false
+  messages:
+    cache-seconds: 60
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database: h2
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  activemq:
+    broker-url: tcp://localhost:61616 # 消息代理的路径
+    user:
+    password:
+    in-memory: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+server:
+  ssl:
+    key-store: classpath:key/keystore.p12
+    key-store-password: tiancom
+    key-store-type: PKCS12
+    key-alias: pas
+management:
+  security:
+    enabled: false
+flyway:
+  locations: classpath:db/migration/h2
+---
+#生产环境
+spring:
+  profiles: production
+  thymeleaf:
+      cache: false
+  h2:
+    console:
+      enabled: false
+flyway:
+  locations: classpath:db/migration/postgres
+server:
+  ssl:
+    key-store: classpath:key/keystore.p12
+    key-store-password: tiancom
+    key-store-type: PKCS12
+    key-alias: pas
+logging:
+  level:
+    root: warn
