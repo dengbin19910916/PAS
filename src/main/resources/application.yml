@@ -6,8 +6,6 @@ server:
 management:
   context-path: /manage
 spring:
-  profiles:
-      active: development #开发模式
   messages:
     basename: i18n/messages
   data:
@@ -31,7 +29,8 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:test
+#    url: jdbc:h2:mem:test
+    url: jdbc:h2:file:~/.h2/test
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -50,6 +49,9 @@ spring:
     port: 5672
     username: guest
     password: guest
+  devtools:
+    livereload:
+      enabled: true
 server:
   ssl:
     key-store: classpath:key/keystore.p12
@@ -61,6 +63,8 @@ management:
     enabled: false
 flyway:
   locations: classpath:db/migration/h2
+security:
+  require-ssl: true
 ---
 #生产环境
 spring:
@@ -70,8 +74,34 @@ spring:
   h2:
     console:
       enabled: false
+  messages:
+    cache-seconds: -1
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 1231
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  activemq:
+    broker-url: tcp://localhost:61616 # 消息代理的路径
+    user:
+    password:
+    in-memory: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  devtools:
+    livereload:
+      enabled: true
 flyway:
   locations: classpath:db/migration/postgres
+  baseline-version: 1
 server:
   ssl:
     key-store: classpath:key/keystore.p12

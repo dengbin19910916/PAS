@@ -8,7 +8,7 @@ public class IndexController {
 
     @GetMapping("/")
     public String hello() {
-        return "hello, db";
+        return "hello, db2";
     }
 
     @GetMapping("/content")

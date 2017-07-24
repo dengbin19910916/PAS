@@ -1,4 +1,4 @@
-package com.tiancom.pas.config.auth;
+package com.tiancom.pas.config.auth.entity;
 
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;

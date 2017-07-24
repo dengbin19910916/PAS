@@ -1,7 +1,7 @@
 -- 用户身份
 CREATE TABLE user_principal (
-  id                      BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  username                VARCHAR(64) NOT NULL,
+  id                      SERIAL       NOT NULL PRIMARY KEY,
+  username                VARCHAR(64)  NOT NULL,
   password                VARCHAR(60)  NOT NULL,
   account_non_expired     BOOLEAN      NOT NULL,
   account_non_locked      BOOLEAN      NOT NULL,

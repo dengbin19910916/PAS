@@ -3,12 +3,17 @@ package com.tiancom.pas.config;
 import com.tiancom.pas.config.auth.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * 系统安全验证配置。
@@ -24,6 +29,9 @@ public class SecurityConfig {
     public static class H2SecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final UserService userService;
+
+        @Autowired
+        private DataSource dataSource;
 
         @Value("${system.bcrypt.strength}")
         private int strength;
@@ -48,6 +56,10 @@ public class SecurityConfig {
                     .and()
                     .logout().permitAll()
                     .and()
+                    .rememberMe().tokenRepository(tokenRepository())
+                    .and()
+                    .httpBasic()
+                    .and()
                     .csrf().disable()
                     .headers().frameOptions().disable();
         }
@@ -63,6 +75,13 @@ public class SecurityConfig {
                 .eraseCredentials(true);
         }
         // @formatter:on
+
+        @Bean
+        public PersistentTokenRepository tokenRepository() {
+            JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+            tokenRepository.setDataSource(dataSource);
+            return tokenRepository;
+        }
     }
 
     @Configuration
@@ -70,6 +89,9 @@ public class SecurityConfig {
     public static class CommonSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final UserService userService;
+
+        @Autowired
+        private DataSource dataSource;
 
         @Value("${system.bcrypt.strength}")
         private int strength;
@@ -82,18 +104,19 @@ public class SecurityConfig {
         // @formatter:off
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
-                .authorizeRequests()
-                    .antMatchers("/login", "/login/**").permitAll()
+            http.authorizeRequests()
                     .anyRequest().authenticated()
+                    .antMatchers("/login", "/login/**").permitAll()
                     .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .failureUrl("/login?error=true")
-                    .defaultSuccessUrl("/")
-                    .permitAll()
-                .and().logout()
-                    .permitAll();
+                    .formLogin()
+                        .loginPage("/login")
+                        .failureUrl("/login?error=true")
+                        .defaultSuccessUrl("/")
+                        .permitAll()
+                    .and()
+                    .logout().permitAll()
+                    .and()
+                    .rememberMe().tokenRepository(tokenRepository());
         }
         // @formatter:on
 
@@ -107,5 +130,12 @@ public class SecurityConfig {
                 .eraseCredentials(true);
         }
         // @formatter:on
+
+        @Bean
+        public PersistentTokenRepository tokenRepository() {
+            JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+            tokenRepository.setDataSource(dataSource);
+            return tokenRepository;
+        }
     }
 }

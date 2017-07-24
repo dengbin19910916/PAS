@@ -31,7 +31,10 @@ public class PasApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		jmsTemplate.send("my-destination", new Msg());
-		rabbitTemplate.convertAndSend("my-queue", "来自RabbitMQ的问候");
+//        for (int i = 0; i < 10; i++) {
+			jmsTemplate.send("my-destination", new Msg());
+			rabbitTemplate.convertAndSend("my-queue", "来自RabbitMQ的问候");
+//			TimeUnit.MILLISECONDS.sleep(50);
+//		}
 	}
 }
