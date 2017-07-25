@@ -1,21 +1,18 @@
 package com.tiancom.pas.site.sample.web;
 
+import com.tiancom.pas.config.auth.entity.UserPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController
+@Controller
 public class IndexController {
 
-//    @GetMapping("/")
-//    public String hello() {
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (principal instanceof UserPrincipal) {
-//            return "hello, " + ((UserPrincipal) principal).getUsername();
-//        }
-//        return "hello, 陌生人";
-//    }
+
 
     @GetMapping("/content")
+    @ResponseBody
     public String content() {
         return "content";
     }

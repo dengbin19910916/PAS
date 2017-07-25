@@ -20,10 +20,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Value("${server.port}")
     private int webPort;
+    @Value("${system.home.path}")
+    private String homePath;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/", "/login");
+        registry.addRedirectViewController("/", homePath);
         registry.addViewController("/login").setViewName("auth/login");
     }
 
