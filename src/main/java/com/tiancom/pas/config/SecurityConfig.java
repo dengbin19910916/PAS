@@ -45,23 +45,24 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-                    .anyRequest().authenticated()
-                    .antMatchers("/h2-console/**").permitAll()
-                    .and()
-                    .formLogin()
-                        .loginPage("/login")
-                        .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/content")
-                        .permitAll()
-                    .and()
-                    .logout().permitAll()
-                    .and()
-                    .rememberMe().tokenRepository(tokenRepository())
-                    .and()
-                    .httpBasic()
-                    .and()
-                    .csrf().disable()
-                    .headers().frameOptions().disable();
+                .anyRequest().authenticated()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/", "/login").permitAll()
+                .and()
+                .formLogin()
+                    .loginPage("/login")
+                    .failureUrl("/login?error=true")
+                    .defaultSuccessUrl("/content")
+                    .permitAll()
+                .and()
+                .logout().permitAll()
+                .and()
+                .rememberMe().tokenRepository(tokenRepository())
+                .and()
+                .httpBasic()
+                .and()
+                .csrf().disable()
+                .headers().frameOptions().disable();
         }
         // @formatter:on
 
@@ -105,18 +106,18 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
-                    .anyRequest().authenticated()
-                    .antMatchers("/login", "/login/**").permitAll()
-                    .and()
-                    .formLogin()
-                        .loginPage("/login")
-                        .failureUrl("/login?error=true")
-                        .defaultSuccessUrl("/content")
-                        .permitAll()
-                    .and()
-                    .logout().permitAll()
-                    .and()
-                    .rememberMe().tokenRepository(tokenRepository());
+                .anyRequest().authenticated()
+                .antMatchers("/login", "/login/**").permitAll()
+                .and()
+                .formLogin()
+                    .loginPage("/login")
+                    .failureUrl("/login?error=true")
+                    .defaultSuccessUrl("/content")
+                    .permitAll()
+                .and()
+                .logout().permitAll()
+                .and()
+                .rememberMe().tokenRepository(tokenRepository());
         }
         // @formatter:on
 
